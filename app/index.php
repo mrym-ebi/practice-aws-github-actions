@@ -15,6 +15,6 @@ $taskId = basename($taskArn);
 // マスク処理: 最初の4文字以外を*に
 $masked = substr($taskId, 0, 4) . str_repeat('*', strlen($taskId) - 4);
 
-echo "<h1>Hello PHP Docker!</h1>";
+echo "<h1>Hello PHP Docker</h1>";
 echo "<p>ECS Task ID: $masked</p>";
 ?>
