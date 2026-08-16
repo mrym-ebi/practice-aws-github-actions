@@ -1,0 +1,32 @@
+name: Destroy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: コードをチェックアウト
+        uses: actions/checkout@v5
+
+      - name: AWSの認証
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: Terraformのセットアップ
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: Terraform destroy
+        working-directory: ./terraform
+        env:
+          TF_VAR_image_tag: ${{ github.sha }}
+        run: terraform destroy -auto-approve
